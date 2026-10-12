@@ -1,0 +1,26 @@
+{
+  "common": {
+    "appName": "FarmerOS",
+    "tagline": "Operating System for Indian Agriculture",
+    "language": "Language",
+    "english": "English",
+    "marathi": "मराठी (Marathi)",
+    "hindi": "हिंदी (Hindi)"
+  },
+  "backend": {
+    "title": "Backend Connection Status",
+    "checking": "Checking connection...",
+    "connected": "Connected",
+    "notReachable": "Not Reachable",
+    "checkedAt": "Checked at",
+    "endpoint": "Supabase Endpoint",
+    "responseStatus": "Status Code",
+    "refresh": "Check Again"
+  },
+  "home": {
+    "welcome": "Welcome to FarmerOS",
+    "description": "A responsive, mobile-first farm operating system designed for Indian smallholder farmers.",
+    "foundationActive": "Step 1 Foundation Active",
+    "provenanceNotice": "Real-time backend health check verified against live Supabase project."
+  }
+}
