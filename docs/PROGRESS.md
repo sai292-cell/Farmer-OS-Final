@@ -5,7 +5,7 @@ This document tracks implementation status across the 10 build stages. Progress 
 ---
 
 ## Overall Summary
-- **Current Active Stage**: Step 1 (Website Setup & Supabase Connection) — Completed (12 Oct 2026)
+- **Current Active Stage**: Step 2 (Design System, App Shell & PWA Foundation) — Completed (13 Oct 2026)
 - **Overall Completion**: Stage 1 Foundation in Progress
 - **13 Oct 2026**: Continued development in VS Code with GitHub Copilot.
 
@@ -48,6 +48,7 @@ This document tracks implementation status across the 10 build stages. Progress 
 - [ ] 1.19 Revocable farm sharing with granular roles (viewer, advisor, worker)
 - [ ] 1.20 Master farm history timeline
 - [x] 1.21 Centralized `AnalyticsService` for product & error event logging (`lib/analytics/index.ts`) (Completed: 12 Oct 2026)
+- [x] Step 2 Design system, app shell, translated dashboard placeholders, PWA manifest/service worker, and navigation analytics (Completed: 13 Oct 2026)
 
 ### Stage 2: Crop Management & Daily Operations — Status: ⏳ Not Started
 - [ ] 2.1 Crop master catalog & variety/hybrid registry

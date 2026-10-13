@@ -5,7 +5,9 @@
     "language": "Language",
     "english": "English",
     "marathi": "मराठी (Marathi)",
-    "hindi": "हिंदी (Hindi)"
+    "hindi": "हिंदी (Hindi)",
+    "notifications": "Notifications",
+    "switchTo": "Switch to {language}"
   },
   "backend": {
     "title": "Backend Connection Status",
@@ -18,9 +20,47 @@
     "refresh": "Check Again"
   },
   "home": {
-    "welcome": "Welcome to FarmerOS",
-    "description": "A responsive, mobile-first farm operating system designed for Indian smallholder farmers.",
-    "foundationActive": "Step 1 Foundation Active",
-    "provenanceNotice": "Real-time backend health check verified against live Supabase project."
+    "greeting": "Good morning, farmer",
+    "comingSoon": "Your trusted farm workspace is being prepared.",
+    "weather": "Weather",
+    "unavailable": "Unavailable until a verified source is connected.",
+    "myFarms": "My Farms",
+    "todaysTasks": "Today's tasks",
+    "quickActions": "Quick actions",
+    "seeAll": "See all",
+    "emptyFarms": "Your farms will appear here after you add your first farm.",
+    "emptyTasks": "No tasks are available yet.",
+    "addFarm": "Add a farm",
+    "logActivity": "Log activity",
+    "checkCrop": "Check a crop",
+    "askAi": "Ask AI",
+    "noLiveData": "Live farm data is unavailable until a verified source is connected."
+  },
+  "navigation": {
+    "label": "Main navigation",
+    "home": "Home",
+    "farms": "Farms",
+    "ai": "AI",
+    "activity": "Activity",
+    "profile": "Profile"
+  },
+  "pages": {
+    "farmsTitle": "Farms",
+    "aiTitle": "AI",
+    "activityTitle": "Activity",
+    "profileTitle": "Profile",
+    "comingSoon": "This feature is coming later. No data is available yet."
+  },
+  "provenance": {
+    "farmerEntered": "Farmer-entered",
+    "aiSuggestion": "AI suggestion",
+    "verified": "Verified",
+    "expertConfirmed": "Expert-confirmed"
+  },
+  "dataStatus": {
+    "actual": "Actual",
+    "estimated": "Estimated",
+    "forecast": "Forecast",
+    "unavailable": "Unavailable"
   }
 }

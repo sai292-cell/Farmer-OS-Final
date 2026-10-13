@@ -46,7 +46,7 @@ export function LanguageSwitcher() {
               type="button"
               disabled={isPending}
               onClick={() => handleLanguageChange(lang.code)}
-              aria-label={`Switch to ${lang.label}`}
+              aria-label={t('switchTo', { language: lang.label })}
               className={`min-h-[48px] min-w-[56px] px-3.5 py-2 text-sm font-semibold rounded-xl transition-all duration-200 cursor-pointer ${
                 isActive
                   ? 'bg-primary text-primary-foreground shadow-xs font-bold'

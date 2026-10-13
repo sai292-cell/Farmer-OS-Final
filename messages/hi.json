@@ -5,7 +5,9 @@
     "language": "भाषा",
     "english": "English (अंग्रेजी)",
     "marathi": "मराठी",
-    "hindi": "हिंदी"
+    "hindi": "हिंदी",
+    "notifications": "सूचनाएं",
+    "switchTo": "{language} में बदलें"
   },
   "backend": {
     "title": "बैकएंड कनेक्शन स्थिति",
@@ -18,9 +20,47 @@
     "refresh": "पुनः जांचें"
   },
   "home": {
-    "welcome": "फार्मर ओएस में आपका स्वागत है",
-    "description": "भारतीय छोटे किसानों के लिए निर्मित त्वरित, मोबाइल-अनुकूल फार्म ऑपरेटिंग सिस्टम।",
-    "foundationActive": "चरण १ बुनियादी ढांचा सक्रिय",
-    "provenanceNotice": "लाइव सुपाबेस प्रोजेक्ट से सत्यापित वास्तविक कनेक्शन स्थिति।"
+    "greeting": "किसान भाई, सुप्रभात",
+    "comingSoon": "आपका विश्वसनीय खेती कार्यक्षेत्र तैयार किया जा रहा है।",
+    "weather": "मौसम",
+    "unavailable": "सत्यापित स्रोत जुड़ने तक उपलब्ध नहीं है।",
+    "myFarms": "मेरे खेत",
+    "todaysTasks": "आज के कार्य",
+    "quickActions": "त्वरित कार्य",
+    "seeAll": "सभी देखें",
+    "emptyFarms": "पहला खेत जोड़ने के बाद आपके खेत यहां दिखाई देंगे।",
+    "emptyTasks": "अभी कोई कार्य उपलब्ध नहीं है।",
+    "addFarm": "खेत जोड़ें",
+    "logActivity": "गतिविधि दर्ज करें",
+    "checkCrop": "फसल जांचें",
+    "askAi": "AI से पूछें",
+    "noLiveData": "सत्यापित स्रोत जुड़ने तक लाइव खेती डेटा उपलब्ध नहीं है।"
+  },
+  "navigation": {
+    "label": "मुख्य नेविगेशन",
+    "home": "होम",
+    "farms": "खेत",
+    "ai": "AI",
+    "activity": "गतिविधि",
+    "profile": "प्रोफ़ाइल"
+  },
+  "pages": {
+    "farmsTitle": "खेत",
+    "aiTitle": "AI",
+    "activityTitle": "गतिविधि",
+    "profileTitle": "प्रोफ़ाइल",
+    "comingSoon": "यह सुविधा बाद में आएगी। अभी कोई डेटा उपलब्ध नहीं है।"
+  },
+  "provenance": {
+    "farmerEntered": "किसान द्वारा दर्ज",
+    "aiSuggestion": "AI सुझाव",
+    "verified": "सत्यापित",
+    "expertConfirmed": "विशेषज्ञ द्वारा पुष्टि"
+  },
+  "dataStatus": {
+    "actual": "वास्तविक",
+    "estimated": "अनुमानित",
+    "forecast": "पूर्वानुमान",
+    "unavailable": "उपलब्ध नहीं"
   }
 }

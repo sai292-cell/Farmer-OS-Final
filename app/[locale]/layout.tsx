@@ -5,6 +5,7 @@ import { getMessages, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
 import { QueryProvider } from '@/components/providers/query-provider'
+import { PwaRegister } from '@/components/shared/pwa-register'
 import type { ReactNode } from 'react'
 
 const outfit = Outfit({
@@ -26,6 +27,7 @@ export function generateStaticParams() {
 export const metadata: Metadata = {
   title: 'FarmerOS — Farm Operating System',
   description: 'Responsive, mobile-first farm operating system for Indian agriculture.',
+  manifest: '/manifest.webmanifest',
   icons: {
     icon: '/favicon.ico',
   },
@@ -55,6 +57,7 @@ export default async function LocaleLayout({
       <body className="min-h-screen bg-background text-foreground font-sans flex flex-col selection:bg-primary-surface selection:text-primary-dark">
         <NextIntlClientProvider messages={messages}>
           <QueryProvider>
+            <PwaRegister />
             {children}
           </QueryProvider>
         </NextIntlClientProvider>

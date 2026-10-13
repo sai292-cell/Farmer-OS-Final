@@ -5,7 +5,9 @@
     "language": "भाषा",
     "english": "English (इंग्रजी)",
     "marathi": "मराठी",
-    "hindi": "हिंदी"
+    "hindi": "हिंदी",
+    "notifications": "सूचना",
+    "switchTo": "{language} मध्ये बदला"
   },
   "backend": {
     "title": "बॅकएंड जोडणी स्थिती",
@@ -18,9 +20,47 @@
     "refresh": "पुन्हा तपासा"
   },
   "home": {
-    "welcome": "फार्मर ओएस मध्ये आपले स्वागत आहे",
-    "description": "भारतीय अल्पभूधारक शेतकऱ्यांसाठी तयार केलेली जलद, मोबाईल-फ्रेंडली शेती संचालन प्रणाली.",
-    "foundationActive": "पायरी १ पायाभूत संरचना सक्रिय",
-    "provenanceNotice": "थेट सुपाबेस प्रकल्पाशी पडताळणी केलेली खरीखुरी जोडणी स्थिती."
+    "greeting": "शेतकरी बांधवांनो, शुभ सकाळ",
+    "comingSoon": "तुमचे विश्वासार्ह शेती कार्यक्षेत्र तयार केले जात आहे.",
+    "weather": "हवामान",
+    "unavailable": "पडताळलेला स्रोत जोडला जाईपर्यंत उपलब्ध नाही.",
+    "myFarms": "माझी शेते",
+    "todaysTasks": "आजची कामे",
+    "quickActions": "जलद कृती",
+    "seeAll": "सर्व पहा",
+    "emptyFarms": "तुमचे पहिले शेत जोडल्यानंतर ते येथे दिसेल.",
+    "emptyTasks": "अजून कोणतीही कामे उपलब्ध नाहीत.",
+    "addFarm": "शेत जोडा",
+    "logActivity": "कृती नोंदवा",
+    "checkCrop": "पीक तपासा",
+    "askAi": "AI ला विचारा",
+    "noLiveData": "पडताळलेला स्रोत जोडल्याशिवाय थेट शेती डेटा उपलब्ध नाही."
+  },
+  "navigation": {
+    "label": "मुख्य नेव्हिगेशन",
+    "home": "मुख्यपृष्ठ",
+    "farms": "शेते",
+    "ai": "AI",
+    "activity": "कृती",
+    "profile": "प्रोफाइल"
+  },
+  "pages": {
+    "farmsTitle": "शेते",
+    "aiTitle": "AI",
+    "activityTitle": "कृती",
+    "profileTitle": "प्रोफाइल",
+    "comingSoon": "हे वैशिष्ट्य नंतर उपलब्ध होईल. अजून डेटा उपलब्ध नाही."
+  },
+  "provenance": {
+    "farmerEntered": "शेतकऱ्याने नोंदवलेले",
+    "aiSuggestion": "AI सूचना",
+    "verified": "पडताळलेले",
+    "expertConfirmed": "तज्ज्ञांनी निश्चित केलेले"
+  },
+  "dataStatus": {
+    "actual": "वास्तविक",
+    "estimated": "अंदाजित",
+    "forecast": "अंदाज",
+    "unavailable": "उपलब्ध नाही"
   }
 }
