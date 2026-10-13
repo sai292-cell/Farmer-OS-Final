@@ -119,7 +119,21 @@
     "perimeter": "Perimeter",
     "notes": "Optional notes about this measurement",
     "save": "Save new boundary version",
-    "saved": "New boundary version saved."
+    "saved": "New boundary version saved.",
+    "mapLayer": "Map",
+    "satelliteLayer": "Satellite",
+    "goToLocation": "Go to my location",
+    "locationError": "Location could not be read. You can still zoom and drag the map.",
+    "mapHint": "Tap “Go to my location” or zoom in to your field.",
+    "searchPlaceholder": "Search village, town, landmark or coordinates",
+    "search": "Search",
+    "searchAttribution": "Place search uses OpenStreetMap Nominatim.",
+    "searchTooShort": "Enter at least 3 characters to search.",
+    "searchUnavailable": "Search is not available right now. You can still zoom and drag the map.",
+    "searchRateLimited": "Please wait a moment before searching again.",
+    "noSearchResults": "No places found. You can still zoom and drag the map.",
+    "largeAreaWarning": "This area looks very large. Please zoom in and check your corner points.",
+    "largeAreaConfirm": "I checked the corner points and want to save this measurement."
   },
   "auth": {
     "brand": "FarmerOS",

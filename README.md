@@ -35,11 +35,23 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 Optional map settings:
 ```env
 NEXT_PUBLIC_MAP_TILE_URL=https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
+NEXT_PUBLIC_SATELLITE_TILE_URL=
+NEXT_PUBLIC_SATELLITE_ATTRIBUTION=
+NEXT_PUBLIC_SATELLITE_MAX_ZOOM=19
 NEXT_PUBLIC_GPS_ACCURACY_THRESHOLD_M=20
+GEOCODER_URL=https://nominatim.openstreetmap.org/search
+GEOCODER_COUNTRY_CODES=in
+GEOCODER_USER_AGENT=FarmerOS/1.0 (replace-with-your-contact)
+GEOCODER_REFERER=http://localhost:3000
 ```
 OpenStreetMap's standard tiles are suitable for light development use. Heavy
 production use needs a proper tile provider and its usage policy; never put
-tile API secrets in client code.
+tile API secrets in client code. Satellite mode uses the configured tile URL;
+the default fallback is Esri World Imagery with required attribution. Place
+search is server-side through Nominatim. Nominatim requires an identifying
+User-Agent, allows at most one request per second, and is not for heavy use.
+Use a paid production tile/geocoding provider and keep credentials in server
+environment variables.
 
 ### 3. Installation
 Install project dependencies:

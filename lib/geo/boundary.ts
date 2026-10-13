@@ -11,6 +11,7 @@ export const STRAIGHTNESS_THRESHOLDS = {
 } as const
 
 export const GUNTHA_SQM = 101.17141056
+export const MAX_WARNING_ACRES = 500
 
 export function closeRing(points: Coordinate[]): Coordinate[] {
   if (points.length === 0) return []

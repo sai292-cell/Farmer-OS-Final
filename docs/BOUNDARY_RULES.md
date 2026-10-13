@@ -36,3 +36,19 @@ The database stores square metres computed by PostGIS. The screen also shows:
 This is a digital measurement and record-keeping tool. It does not prove
 ownership, title or a legal survey. For legal matters, official land and survey
 records and authorised surveyors are the authority.
+
+## Map layers and search
+
+Street maps use the configured `NEXT_PUBLIC_MAP_TILE_URL`, defaulting to
+OpenStreetMap standard tiles. Satellite maps use the configured
+`NEXT_PUBLIC_SATELLITE_TILE_URL`; the UI has an Esri World Imagery fallback and
+shows the configured or default Esri attribution. The satellite maximum native
+zoom is configurable so tiles stretch instead of becoming blank beyond the
+provider's imagery zoom.
+
+Place search uses the server-only `GEOCODER_URL`, defaulting to OpenStreetMap
+Nominatim. Nominatim requires an identifying user agent, at most one request per
+second, and no heavy use. The route has a small in-memory per-user limit for
+development; production needs a shared rate-limit store. Use paid tile and
+geocoding providers for production, keep credentials in server environment
+variables, and preserve each provider's attribution and usage terms.

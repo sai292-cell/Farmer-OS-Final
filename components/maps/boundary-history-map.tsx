@@ -9,5 +9,5 @@ export function BoundaryHistoryMap({ survey }: { survey: { raw_points: unknown }
     const value = point as { longitude?: number; latitude?: number }
     return [Number(value.longitude), Number(value.latitude)] as Coordinate
   }).filter(([lng, lat]) => Number.isFinite(lng) && Number.isFinite(lat)) : []
-  return points.length >= 3 ? <div className="mt-4"><BoundaryMap points={points} readOnly /></div> : null
+  return points.length >= 3 ? <div className="mt-4"><BoundaryMap points={points} readOnly onLocation={() => undefined} onLocationError={() => undefined} /></div> : null
 }
