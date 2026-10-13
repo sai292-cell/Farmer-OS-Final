@@ -52,6 +52,7 @@ This document tracks implementation status across the 10 build stages. Progress 
 - [x] Step 3 Login, email/password authentication, private farmer profile, language preference, and profile RLS migration (Completed: 13 Oct 2026; run `supabase/migrations/0002_profiles.sql` manually in the Supabase SQL Editor)
 - [x] Step 4A Farms, plots, PostGIS boundary measurement, GPS walking mode, and append-only survey history (Completed: 13 Oct 2026; run `supabase/migrations/0003_farms_plots_surveys.sql` manually in the Supabase SQL Editor)
 - [x] Step 4A polish: primary contrast, map start/location, large-area confirmation, redirect, satellite layers, and place search (Completed: 13 Oct 2026; no database changes)
+- [x] Step 4A bug fix: render geolocation map control inside `MapContainer` for editable and read-only boundary maps (Completed: 13 Oct 2026; no database changes)
 
 **Step 4A manual database note:** `0003_farms_plots_surveys.sql` must be run
 manually once in the Supabase SQL Editor after migrations 0001 and 0002.
