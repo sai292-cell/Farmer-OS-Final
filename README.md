@@ -32,6 +32,15 @@ NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 ```
 
+Optional map settings:
+```env
+NEXT_PUBLIC_MAP_TILE_URL=https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
+NEXT_PUBLIC_GPS_ACCURACY_THRESHOLD_M=20
+```
+OpenStreetMap's standard tiles are suitable for light development use. Heavy
+production use needs a proper tile provider and its usage policy; never put
+tile API secrets in client code.
+
 ### 3. Installation
 Install project dependencies:
 ```bash
@@ -57,6 +66,8 @@ npm start
 ## Supabase Database Setup
 Before deploying data tables in later steps, run the foundation extension migration in your Supabase SQL Editor:
 - Execute [`supabase/migrations/0001_enable_extensions.sql`](supabase/migrations/0001_enable_extensions.sql) to enable `postgis` and `pgcrypto` and create the timestamp update function.
+- Execute [`supabase/migrations/0002_profiles.sql`](supabase/migrations/0002_profiles.sql) for private profiles.
+- Execute [`supabase/migrations/0003_farms_plots_surveys.sql`](supabase/migrations/0003_farms_plots_surveys.sql) for farms, plots, and append-only boundary measurements.
 
 ---
 

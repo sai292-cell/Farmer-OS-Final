@@ -5,6 +5,10 @@ import { DataStatusBadge } from '@/components/ui/data-status-badge'
 import { EmptyState } from '@/components/ui/empty-state'
 import { SectionHeader } from '@/components/ui/section-header'
 import { createClient } from '@/lib/supabase/server'
+import { Link } from '@/i18n/routing'
+import dynamic from 'next/dynamic'
+
+const FarmAreaChart = dynamic(() => import('@/components/charts/farm-area-chart').then((module) => module.FarmAreaChart))
 
 export default async function HomePage() {
   const t = await getTranslations('home')
@@ -14,6 +18,8 @@ export default async function HomePage() {
   const { data: profile } = user
     ? await supabase.from('profiles').select('full_name').eq('id', user.id).maybeSingle()
     : { data: null }
+  const { data: farms } = user ? await supabase.from('farms').select('id,name').is('archived_at', null).order('created_at', { ascending: false }) : { data: [] }
+  const { data: surveys } = farms?.length ? await supabase.from('boundary_surveys').select('farm_id,area_sqm').in('farm_id', farms.map((farm) => farm.id)).is('plot_id', null).order('version_number', { ascending: false }) : { data: [] }
   const greeting = profile?.full_name ? t('greetingWithName', { name: profile.full_name }) : t('greeting')
   const quickActions = [
     { key: 'addFarm', icon: <MapPinned className="h-6 w-6" />, color: 'mint' as const },
@@ -45,7 +51,7 @@ export default async function HomePage() {
 
       <section className="space-y-4">
         <SectionHeader title={t('myFarms')} seeAll={t('seeAll')} />
-        <EmptyState icon={<MapPinned className="h-6 w-6" />} message={t('emptyFarms')} actionLabel={t('addFarm')} actionHref="/farms" />
+        {!farms?.length ? <EmptyState icon={<MapPinned className="h-6 w-6" />} message={t('emptyFarms')} actionLabel={t('addFarm')} actionHref="/farms/new" /> : <div className="space-y-3">{farms.slice(0, 3).map((farm) => <Link key={farm.id} href={`/farms/${farm.id}`} className="block rounded-2xl border border-border bg-surface p-4 font-semibold">{farm.name}</Link>)}{surveys?.length ? <div className="rounded-3xl border border-border bg-surface p-4"><FarmAreaChart data={farms.map((farm) => ({ name: farm.name, area: Number(surveys.find((survey) => survey.farm_id === farm.id)?.area_sqm || 0) })).filter((item) => item.area > 0)} /></div> : null}</div>}
       </section>
 
       <section className="space-y-4">

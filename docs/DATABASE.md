@@ -16,3 +16,24 @@ It stores the farmer's name, optional phone number, preferred language, location
 - Profile creation is performed by the protected signup trigger, not by a public insert policy.
 
 Run `supabase/migrations/0002_profiles.sql` manually in the Supabase SQL Editor before testing signup or profile editing.
+
+## Farms, plots, and boundary surveys
+
+Migration `0003_farms_plots_surveys.sql` adds private `farms`, `plots`, and
+`boundary_surveys` tables. A farm can have many plots. A survey may describe a
+whole farm (`plot_id` is null) or one plot.
+
+All three tables have RLS. A signed-in farmer can only read, add, or update
+their own farm and plot rows. Survey rows can be read or added by their owner,
+but never updated or deleted. Survey history is append-only: re-measuring
+creates a new version. The database trigger copies owners from the farm and
+plot, assigns the next version, validates the polygon, and computes
+`area_sqm` and `perimeter_m` using PostGIS geography functions. Client values
+for those measurements are ignored.
+
+Spatial columns have GIST indexes and owner/farm/plot columns have btree
+indexes. `farm_summary` is a RLS-aware view with the latest whole-farm area,
+version, and active plot count.
+
+Run `supabase/migrations/0003_farms_plots_surveys.sql` manually in the
+Supabase SQL Editor once after the profile migration. It is safe to run again.
