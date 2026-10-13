@@ -5,7 +5,7 @@ This document tracks implementation status across the 10 build stages. Progress 
 ---
 
 ## Overall Summary
-- **Current Active Stage**: Step 2 (Design System, App Shell & PWA Foundation) — Completed (13 Oct 2026)
+- **Current Active Stage**: Step 3 (Login & Farmer Profile) — Completed (13 Oct 2026)
 - **Overall Completion**: Stage 1 Foundation in Progress
 - **13 Oct 2026**: Continued development in VS Code with GitHub Copilot.
 
@@ -30,11 +30,11 @@ This document tracks implementation status across the 10 build stages. Progress 
 - [x] 1.1 Next.js 16+ (App Router) + TypeScript scaffolding with Tailwind CSS v4 & shadcn/ui (Completed: 12 Oct 2026)
 - [x] 1.2 `next-intl` localization setup (English, Marathi, Hindi with JSON dictionary catalogs & language switcher) (Completed: 12 Oct 2026)
 - [x] 1.3 Supabase backend client configuration (`lib/supabase/client.ts`, `server.ts`), environment credentials, and PostGIS/pgcrypto migration file `0001_enable_extensions.sql` (Completed: 12 Oct 2026)
-- [ ] 1.4 Row Level Security (RLS) policies for tenant isolation on all tables
+- [x] 1.4 Row Level Security (RLS) policies for the private farmer profiles table (Step 3; migration must be run manually)
 - [ ] 1.5 IndexedDB local database schema & repositories (`idb` / Dexie.js)
 - [ ] 1.6 Service Worker PWA setup (manifest, offline shell caching, sync queue)
 - [ ] 1.7 Client-side outbox sync queue manager & online/offline connectivity listener
-- [ ] 1.8 Farmer authentication (Phone OTP via Supabase Auth) & smart farmer profile
+- [x] 1.8 Farmer authentication (email/password via Supabase Auth) & smart farmer profile (Step 3; phone OTP remains for a later provider decision)
 - [ ] 1.9 Multi-farm & multi-plot hierarchy management with persistent active farm state
 - [ ] 1.10 Interactive Leaflet/MapLibre map container with OpenStreetMap tiles
 - [ ] 1.11 GPS walking survey mode (Geolocation API) & manual polygon drawing
@@ -49,6 +49,7 @@ This document tracks implementation status across the 10 build stages. Progress 
 - [ ] 1.20 Master farm history timeline
 - [x] 1.21 Centralized `AnalyticsService` for product & error event logging (`lib/analytics/index.ts`) (Completed: 12 Oct 2026)
 - [x] Step 2 Design system, app shell, translated dashboard placeholders, PWA manifest/service worker, and navigation analytics (Completed: 13 Oct 2026)
+- [x] Step 3 Login, email/password authentication, private farmer profile, language preference, and profile RLS migration (Completed: 13 Oct 2026; run `supabase/migrations/0002_profiles.sql` manually in the Supabase SQL Editor)
 
 ### Stage 2: Crop Management & Daily Operations — Status: ⏳ Not Started
 - [ ] 2.1 Crop master catalog & variety/hybrid registry

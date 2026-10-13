@@ -3,8 +3,17 @@ import { AnalyticsPageView } from '@/components/shared/analytics-page-view'
 import { AppHeader } from '@/components/shared/app-header'
 import { BottomNav } from '@/components/shared/bottom-nav'
 import { DashboardSidebar } from '@/components/shared/dashboard-sidebar'
+import { createClient } from '@/lib/supabase/server'
+import { redirect } from 'next/navigation'
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
+export const dynamic = 'force-dynamic'
+
+export default async function DashboardLayout({ children, params }: { children: ReactNode; params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect(`/${locale}/login`)
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <AnalyticsPageView />

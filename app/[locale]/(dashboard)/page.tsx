@@ -1,13 +1,20 @@
 import { CalendarCheck, CloudSun, Droplets, Leaf, ListTodo, MapPinned, Sprout } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 import { CategoryTile } from '@/components/ui/category-tile'
 import { DataStatusBadge } from '@/components/ui/data-status-badge'
 import { EmptyState } from '@/components/ui/empty-state'
 import { SectionHeader } from '@/components/ui/section-header'
+import { createClient } from '@/lib/supabase/server'
 
-export default function HomePage() {
-  const t = useTranslations('home')
-  const common = useTranslations('common')
+export default async function HomePage() {
+  const t = await getTranslations('home')
+  const common = await getTranslations('common')
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  const { data: profile } = user
+    ? await supabase.from('profiles').select('full_name').eq('id', user.id).maybeSingle()
+    : { data: null }
+  const greeting = profile?.full_name ? t('greetingWithName', { name: profile.full_name }) : t('greeting')
   const quickActions = [
     { key: 'addFarm', icon: <MapPinned className="h-6 w-6" />, color: 'mint' as const },
     { key: 'logActivity', icon: <CalendarCheck className="h-6 w-6" />, color: 'peach' as const },
@@ -19,7 +26,7 @@ export default function HomePage() {
     <div className="mx-auto max-w-7xl space-y-8 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
       <section className="space-y-2">
         <p className="text-sm font-semibold text-primary-dark">{common('appName')}</p>
-        <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">{t('greeting')}</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">{greeting}</h1>
         <p className="text-sm text-text-secondary">{t('comingSoon')}</p>
       </section>
 
