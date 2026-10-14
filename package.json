@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "format": "prettier --write .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "places:build": "node scripts/build-places-csv.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

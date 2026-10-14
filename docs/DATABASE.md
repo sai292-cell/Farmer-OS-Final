@@ -37,3 +37,16 @@ version, and active plot count.
 
 Run `supabase/migrations/0003_farms_plots_surveys.sql` manually in the
 Supabase SQL Editor once after the profile migration. It is safe to run again.
+
+## Places search
+
+Migration `0004_places_search.sql` enables `pg_trgm` and `unaccent`, creates
+the public `places` table, and adds a `places_import` staging table.
+Authenticated users can read `places`, but browser clients cannot change either
+table. The importer stores GeoNames identifiers and licence information.
+
+The `place_name_key` function makes a spelling-tolerant key for Indian place
+names. `search_places` accepts the typed text and an optional nearby farm or
+boundary point. It returns up to 15 ranked places, including district and
+taluka fallback places. The migration is safe to run again. Import instructions
+are in [`PLACES_IMPORT.md`](./PLACES_IMPORT.md).

@@ -53,6 +53,9 @@ User-Agent, allows at most one request per second, and is not for heavy use.
 Use a paid production tile/geocoding provider and keep credentials in server
 environment variables.
 
+Place data © GeoNames (CC BY 4.0). See [`docs/PLACES_IMPORT.md`](docs/PLACES_IMPORT.md)
+for the local CSV build and Supabase import steps.
+
 ### 3. Installation
 Install project dependencies:
 ```bash
@@ -80,6 +83,7 @@ Before deploying data tables in later steps, run the foundation extension migrat
 - Execute [`supabase/migrations/0001_enable_extensions.sql`](supabase/migrations/0001_enable_extensions.sql) to enable `postgis` and `pgcrypto` and create the timestamp update function.
 - Execute [`supabase/migrations/0002_profiles.sql`](supabase/migrations/0002_profiles.sql) for private profiles.
 - Execute [`supabase/migrations/0003_farms_plots_surveys.sql`](supabase/migrations/0003_farms_plots_surveys.sql) for farms, plots, and append-only boundary measurements.
+- Execute [`supabase/migrations/0004_places_search.sql`](supabase/migrations/0004_places_search.sql) for the own-village GeoNames place search.
 
 ---
 
