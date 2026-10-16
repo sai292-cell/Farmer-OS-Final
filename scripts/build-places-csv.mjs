@@ -39,6 +39,7 @@ const admin1 = (await readFile(admin1File, 'utf8')).split(/\r?\n/).reduce((map, 
 }, new Map())
 const maharashtraCode = [...admin1.entries()].find(([, name]) => name.toLowerCase() === 'maharashtra')?.[0]
 if (!maharashtraCode) throw new Error('Could not find Maharashtra in admin1CodesASCII.txt')
+const maharashtraAdmin1 = maharashtraCode.includes('.') ? maharashtraCode.split('.')[1] : maharashtraCode
 const districts = (await readFile(admin2File, 'utf8')).split(/\r?\n/).reduce((map, line) => {
   const [code, name] = line.split('\t')
   if (code && name) map.set(code, name)
@@ -52,9 +53,13 @@ await readLines(alternateFile, async (line) => {
   const language = columns[2]
   const name = columns[3]
   const entry = alternateNames.get(id) || { local: '', variants: [] }
-  if (language === 'mr' && !entry.local) entry.local = name
-  if (language === 'hi' && !entry.local) entry.local = name
-  if (language !== 'mr' && language !== 'hi' && language !== 'link' && name) entry.variants.push(name)
+  if (language === 'mr' && !entry.local) {
+    entry.local = name
+  } else if (language === 'hi' && !entry.local) {
+    entry.local = name
+  } else if (!['link', 'wkdt', 'post', 'iata', 'icao', 'faac'].includes(language) && !name.startsWith('http') && name) {
+    entry.variants.push(name)
+  }
   alternateNames.set(id, entry)
 })
 
@@ -77,14 +82,16 @@ await readLines(mainFile, async (line) => {
   const columns = line.split('\t')
   const [id, name, , , latText, lngText, featureClass, featureCode, country, , admin1Code, admin2Code, , , populationText] = columns
   const population = Number(populationText) || 0
-  const type = country === 'IN' && ((featureClass === 'P' && admin1Code === maharashtraCode) || (featureClass === 'A' && admin1Code === maharashtraCode && ['ADM2', 'ADM3'].includes(featureCode))) ? codeToType(featureCode, population) : null
+  const isMaharashtra = country === 'IN' && (admin1Code === maharashtraCode || admin1Code === maharashtraAdmin1 || `${country}.${admin1Code}` === maharashtraCode)
+  const isTargetFeature = featureClass === 'P' || (featureClass === 'A' && ['ADM2', 'ADM3'].includes(featureCode))
+  const type = isMaharashtra && isTargetFeature ? codeToType(featureCode, population) : null
   if (!type) return
   const lat = Number(latText); const lng = Number(lngText)
   if (lat < 6.5 || lat > 37.6 || lng < 68.1 || lng > 97.25) { outOfBounds += 1; return }
   const alternate = alternateNames.get(id) || { local: '', variants: [] }
   const inlineVariants = columns[3] ? columns[3].split(',') : []
   const variants = [...new Set([...inlineVariants, ...alternate.variants].filter((value) => value && value !== name))].slice(0, 40)
-  const district = districts.get(`IN.${admin2Code}`) || (type === 'district' ? name : '')
+  const district = districts.get(`${country}.${admin1Code}.${admin2Code}`) || districts.get(`IN.${admin1Code}.${admin2Code}`) || districts.get(`IN.${admin2Code}`) || (type === 'district' ? name : '')
   await writeRow([name, alternate.local, arrayLiteral(variants), type, district, 'Maharashtra', population, lat, lng, 'geonames', id, 'CC BY 4.0'].map(csv).join(',') + '\n')
   rowCount += 1
 })

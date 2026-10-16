@@ -17,7 +17,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'rate_limited' }, { status: 429 })
   }
   requests.set(user.id, [...recent, now])
-  const params = new URLSearchParams({ format: 'jsonv2', limit: '5', countrycodes: process.env.GEOCODER_COUNTRY_CODES || 'in', q: parsed.data })
+  const params = new URLSearchParams({ format: 'jsonv2', addressdetails: '1', namedetails: '1', dedupe: '1', limit: '10', countrycodes: process.env.GEOCODER_COUNTRY_CODES || 'in', q: parsed.data })
   const locale = request.headers.get('accept-language')?.split(',')[0] || 'en'
   params.set('accept-language', locale)
   const controller = new AbortController()

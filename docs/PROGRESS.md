@@ -56,7 +56,7 @@ This document tracks implementation status across the 10 build stages. Progress 
 - [x] Step 4A map search/GPS repair: village search focuses the first result, street/satellite selection is always available, and GPS requests fresh high-accuracy readings (Completed: 13 Oct 2026; no database changes)
 - [x] Step 4A map navigation repair: village results use validated animated recentering with bounded zoom, and satellite mode includes place labels (Completed: 14 Oct 2026; no database changes)
 - [x] Step 4A small-place search repair: village/hamlet results use exact coordinates, settlement-aware zoom, and a persistent searched-place label (Completed: 14 Oct 2026; no database changes)
-- [x] Step 4A-Places: own GeoNames village search, stable map controls, import staging, and translated fallback/error handling (Completed: 14 Oct 2026; run `supabase/migrations/0004_places_search.sql` manually)
+- [x] Step 4A-Places: own GeoNames village search, stable map controls, import staging, and translated fallback/error handling (Completed: 16 Oct 2026; run `supabase/migrations/0004_places_search.sql` manually)
 
 **Step 4A manual database note:** `0003_farms_plots_surveys.sql` must be run
 manually once in the Supabase SQL Editor after migrations 0001 and 0002.
