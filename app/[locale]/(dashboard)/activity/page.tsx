@@ -1,8 +1,19 @@
 import { Activity } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { EmptyState } from '@/components/ui/empty-state'
+import { PageContainer } from '@/components/shared/page-container'
 
 export default function ActivityPage() {
   const t = useTranslations('pages')
-  return <div className="mx-auto max-w-3xl space-y-6 px-4 py-8 sm:px-6"><h1 className="text-3xl font-bold text-text-primary">{t('activityTitle')}</h1><EmptyState icon={<Activity className="h-7 w-7" />} message={t('comingSoon')} /></div>
+  return (
+    <PageContainer className="space-y-6">
+      <h1 className="text-2xl font-extrabold tracking-tight text-text-primary sm:text-3xl">
+        {t('activityTitle')}
+      </h1>
+      <EmptyState
+        icon={<Activity className="h-8 w-8 text-primary" />}
+        message={t('comingSoon')}
+      />
+    </PageContainer>
+  )
 }

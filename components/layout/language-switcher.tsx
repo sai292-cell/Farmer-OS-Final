@@ -6,18 +6,18 @@ import { Globe } from 'lucide-react'
 import { useTransition } from 'react'
 import { analytics } from '@/lib/analytics'
 
+const languages = [
+  { code: 'en', label: 'EN', fullLabel: 'English' },
+  { code: 'mr', label: 'म', fullLabel: 'मराठी' },
+  { code: 'hi', label: 'हि', fullLabel: 'हिंदी' },
+] as const
+
 export function LanguageSwitcher() {
   const t = useTranslations('common')
   const currentLocale = useLocale()
   const router = useRouter()
   const pathname = usePathname()
   const [isPending, startTransition] = useTransition()
-
-  const languages = [
-    { code: 'en', label: 'English' },
-    { code: 'mr', label: 'मराठी' },
-    { code: 'hi', label: 'हिंदी' },
-  ] as const
 
   const handleLanguageChange = (newLocale: 'en' | 'mr' | 'hi') => {
     if (newLocale === currentLocale) return
@@ -33,11 +33,11 @@ export function LanguageSwitcher() {
   }
 
   return (
-    <div className="flex items-center gap-1.5 bg-secondary/80 p-1.5 rounded-2xl border border-border shadow-xs">
-      <div className="flex items-center justify-center pl-2 pr-1 text-primary-dark">
-        <Globe className="w-5 h-5 text-primary" aria-hidden="true" />
+    <div className="flex items-center gap-0.5 rounded-xl border border-border bg-background p-0.5">
+      <div className="flex items-center justify-center pl-1.5 pr-0.5 text-primary" aria-hidden="true">
+        <Globe className="h-4 w-4" />
       </div>
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-0.5">
         {languages.map((lang) => {
           const isActive = currentLocale === lang.code
           return (
@@ -46,11 +46,12 @@ export function LanguageSwitcher() {
               type="button"
               disabled={isPending}
               onClick={() => handleLanguageChange(lang.code)}
-              aria-label={t('switchTo', { language: lang.label })}
-              className={`min-h-[48px] min-w-[56px] px-3.5 py-2 text-sm font-semibold rounded-xl transition-all duration-200 cursor-pointer ${
+              aria-label={t('switchTo', { language: lang.fullLabel })}
+              aria-pressed={isActive}
+              className={`flex h-9 min-w-[36px] items-center justify-center rounded-lg px-2 text-xs font-bold transition-all duration-200 ${
                 isActive
-                  ? 'bg-primary text-primary-foreground shadow-xs font-bold'
-                  : 'bg-transparent text-text-primary hover:bg-primary-surface hover:text-primary-dark'
+                  ? 'bg-primary text-white shadow-sm'
+                  : 'text-text-secondary hover:bg-primary-surface hover:text-primary-dark'
               } disabled:opacity-60`}
             >
               {lang.label}

@@ -238,7 +238,7 @@ export function EsriMapView({
             key="esri-satellite-tile-layer"
             url={tileUrl}
             attribution={SATELLITE_ATTRIBUTION}
-            maxNativeZoom={19}
+            maxNativeZoom={18}
             maxZoom={22}
           />
         ) : (
@@ -258,7 +258,7 @@ export function EsriMapView({
             pane="esri-labels-pane"
             url={labelsTileUrl}
             attribution={LABELS_ATTRIBUTION}
-            maxNativeZoom={19}
+            maxNativeZoom={18}
             maxZoom={22}
           />
         )}

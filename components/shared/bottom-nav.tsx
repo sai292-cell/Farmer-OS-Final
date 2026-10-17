@@ -23,24 +23,30 @@ export function BottomNav() {
   }
 
   return (
-    <nav aria-label={t('label')} className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-surface/95 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 shadow-[0_-4px_20px_-2px_rgba(27,94,32,0.08)] backdrop-blur-md lg:hidden">
-      <div className="mx-auto grid max-w-lg grid-cols-5 items-end">
+    <nav
+      aria-label={t('label')}
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-surface/95 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-1 shadow-[--shadow-nav] backdrop-blur-md lg:hidden"
+    >
+      <div className="mx-auto grid max-w-md grid-cols-5 items-end">
         <NavItem item={items[0]} active={pathname === '/'} label={t('home')} onClick={goTo} />
         <NavItem item={items[1]} active={pathname.startsWith('/farms')} label={t('farms')} onClick={goTo} />
+
+        {/* Raised centre AI button */}
         <button
           type="button"
           onClick={() => {
             analytics.trackEvent('ai_button_used', { placement: 'bottom_navigation' })
             router.push('/ai')
           }}
-          className="-mt-8 flex min-h-[80px] flex-col items-center justify-end gap-1 text-xs font-semibold text-primary-dark"
+          className="-mt-6 flex min-h-[72px] flex-col items-center justify-end gap-0.5 text-[11px] font-bold text-primary-dark"
           aria-label={t('ai')}
         >
-          <span className="flex h-14 w-14 items-center justify-center rounded-full border-4 border-background bg-gradient-to-tr from-primary-dark to-primary text-white shadow-lg shadow-primary/30">
-            <Sparkles className="h-7 w-7" aria-hidden="true" />
+          <span className="flex h-14 w-14 items-center justify-center rounded-full border-4 border-background bg-gradient-to-tr from-primary-dark to-primary text-white shadow-lg shadow-primary/30 transition-transform duration-200 active:scale-95">
+            <Sparkles className="h-6 w-6" aria-hidden="true" />
           </span>
           <span>{t('ai')}</span>
         </button>
+
         <NavItem item={items[2]} active={pathname.startsWith('/activity')} label={t('activity')} onClick={goTo} />
         <NavItem item={items[3]} active={pathname.startsWith('/profile')} label={t('profile')} onClick={goTo} />
       </div>
@@ -65,9 +71,19 @@ function NavItem({
       type="button"
       onClick={() => onClick(item.key, item.href)}
       aria-current={active ? 'page' : undefined}
-      className={`flex min-h-[56px] flex-col items-center justify-center gap-1 rounded-2xl px-1 text-xs font-semibold ${active ? 'text-primary-dark' : 'text-text-secondary'}`}
+      className={`flex min-h-[56px] flex-col items-center justify-center gap-0.5 rounded-xl px-1 text-[11px] font-bold transition-colors duration-200 ${
+        active
+          ? 'text-primary-dark'
+          : 'text-text-muted hover:text-text-secondary'
+      }`}
     >
-      <Icon className="h-5 w-5" aria-hidden="true" />
+      <span
+        className={`flex h-8 w-8 items-center justify-center rounded-lg transition-colors duration-200 ${
+          active ? 'bg-primary-surface' : ''
+        }`}
+      >
+        <Icon className="h-5 w-5" aria-hidden="true" />
+      </span>
       <span>{label}</span>
     </button>
   )
