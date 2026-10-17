@@ -57,6 +57,8 @@ This document tracks implementation status across the 10 build stages. Progress 
 - [x] Step 4A map navigation repair: village results use validated animated recentering with bounded zoom, and satellite mode includes place labels (Completed: 14 Oct 2026; no database changes)
 - [x] Step 4A small-place search repair: village/hamlet results use exact coordinates, settlement-aware zoom, and a persistent searched-place label (Completed: 14 Oct 2026; no database changes)
 - [x] Step 4A-Places: own GeoNames village search, stable map controls, import staging, and translated fallback/error handling (Completed: 16 Oct 2026; run `supabase/migrations/0004_places_search.sql` manually)
+- [x] Fresh start: Esri maps (Step A) — Isolated Esri ArcGIS Satellite & Place Search test route at `/[locale]/dev/map-test` (returns 404 in production). Leaflet setup with one active `TileLayer` at a time, `World_Imagery` (maxNativeZoom: 19) and `World_Street_Map` (maxNativeZoom: 18) with official Esri attribution, non-stored India place search (`findAddressCandidates`), draggable pin with clearly separated Latitude/Longitude and coordinate conversion helper (`lib/geo/esri-coords.ts`), browser geolocation with accuracy display, and service worker dev unregister + production caching exclusions for ArcGIS/Supabase. No database or existing page changes. (Completed: 17 Oct 2026; no database changes)
+
 
 **Step 4A manual database note:** `0003_farms_plots_surveys.sql` must be run
 manually once in the Supabase SQL Editor after migrations 0001 and 0002.

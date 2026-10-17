@@ -56,6 +56,14 @@ environment variables.
 Place data © GeoNames (CC BY 4.0). See [`docs/PLACES_IMPORT.md`](docs/PLACES_IMPORT.md)
 for the local CSV build and Supabase import steps.
 
+#### Esri ArcGIS Location Platform Setup
+FarmerOS supports high-resolution satellite imagery (`World_Imagery`), street basemaps (`World_Street_Map`), and place search via Esri ArcGIS Location Platform:
+- Free tier includes generous monthly transactions with pay-as-you-go disabled in your ArcGIS developer dashboard to guarantee zero accidental charges.
+- Generate an API key at [developers.arcgis.com](https://developers.arcgis.com) and restrict Allowed Referrers to `http://localhost:3000` (and your production domain).
+- Configure `NEXT_PUBLIC_ESRI_API_KEY` in `.env.local`. Keep `.env.local` git-ignored.
+- Keys, geocoding queries, and coordinates are never logged or transmitted to external tracking services.
+
+
 ### 3. Installation
 Install project dependencies:
 ```bash

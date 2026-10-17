@@ -4,11 +4,29 @@ import { useEffect } from 'react'
 
 export function PwaRegister() {
   useEffect(() => {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').catch((error: unknown) => {
-        console.error('FarmerOS service worker registration failed', error)
+    if (typeof window === 'undefined' || !('serviceWorker' in navigator)) return
+
+    if (process.env.NODE_ENV !== 'production') {
+      // In development: never run service workers; unregister any stale worker and clean caches
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (const registration of registrations) {
+          registration.unregister().catch(() => undefined)
+        }
       })
+      if ('caches' in window) {
+        caches.keys().then((keys) => {
+          for (const key of keys) {
+            caches.delete(key).catch(() => undefined)
+          }
+        })
+      }
+      return
     }
+
+    // In production only: register the service worker
+    navigator.serviceWorker.register('/sw.js').catch((error: unknown) => {
+      console.error('FarmerOS service worker registration failed', error)
+    })
   }, [])
   return null
 }
