@@ -56,3 +56,56 @@ body {
   color: var(--foreground);
   min-height: 100vh;
 }
+
+/* Custom Halo / Outline Labels for Map on Satellite & Hybrid views */
+.farmer-os-place-tooltip {
+  background: rgba(15, 23, 42, 0.90) !important;
+  color: #ffffff !important;
+  font-family: var(--font-sans, system-ui, -apple-system, sans-serif) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  padding: 4px 10px !important;
+  border-radius: 8px !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.8) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6) !important;
+  text-shadow:
+    -1px -1px 0 #000,
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000,
+     0px  0px 4px #000 !important;
+  white-space: nowrap !important;
+  pointer-events: none !important;
+  user-select: none !important;
+}
+
+.farmer-os-place-tooltip::before {
+  border-top-color: rgba(15, 23, 42, 0.90) !important;
+}
+
+.farmer-os-search-tooltip {
+  background: rgba(13, 79, 44, 0.94) !important;
+  color: #ffffff !important;
+  font-family: var(--font-sans, system-ui, -apple-system, sans-serif) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  padding: 4px 10px !important;
+  border-radius: 8px !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.8) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6) !important;
+  text-shadow:
+    -1px -1px 0 #000,
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000,
+     0px  0px 4px #000 !important;
+  white-space: nowrap !important;
+  pointer-events: none !important;
+  user-select: none !important;
+}
+
+.farmer-os-search-tooltip::before {
+  border-top-color: rgba(13, 79, 44, 0.94) !important;
+}
