@@ -64,7 +64,10 @@ export function BoundaryMap({ points, onAdd, onMove, readOnly = false, focus = n
   const leafletPoints = points.map(([lng, lat]) => [lat, lng] as LatLngExpression)
   const streetUrl = process.env.NEXT_PUBLIC_MAP_TILE_URL || 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
   const satelliteUrl = process.env.NEXT_PUBLIC_SATELLITE_TILE_URL || 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
-  const satelliteLabelsUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'
+  const esriKey = process.env.NEXT_PUBLIC_ESRI_API_KEY || ''
+  const satelliteLabelsUrl = esriKey
+    ? `https://static-map-tiles-api.arcgis.com/arcgis/rest/services/static-basemap-tiles-service/v1/arcgis/imagery/labels/static/tile/{z}/{y}/{x}?token=${encodeURIComponent(esriKey)}`
+    : 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'
   const attribution = layer === 'satellite' ? process.env.NEXT_PUBLIC_SATELLITE_ATTRIBUTION || 'Tiles &copy; Esri — Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community' : '&copy; OpenStreetMap contributors'
   const changeLayer = (value: 'street' | 'satellite') => { setLayer(value); localStorage.setItem('farmeros-map-layer', value); onLayerChange?.(value); analytics.trackEvent('map_layer_changed', { layer: value }) }
   const handleLocation = (point: Point, accuracy: number) => { setLocationAccuracy(accuracy); onLocation?.(point, accuracy) }

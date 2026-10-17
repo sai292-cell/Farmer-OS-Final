@@ -15,9 +15,21 @@ const accuracyLimit = Number(process.env.NEXT_PUBLIC_GPS_ACCURACY_THRESHOLD_M ||
 type SearchResult = { id?: number; name: string; name_local?: string | null; place_type: string; district?: string | null; state?: string | null; population?: number | null; lat: number; lng: number; match_level?: string; score?: number }
 
 function focusForResult(result: SearchResult) {
-  const placeType = result.place_type.toLowerCase()
-  const zoom = ['village', 'hamlet', 'locality'].includes(placeType) ? 17 : ['town', 'city'].includes(placeType) ? 13 : 11
-  return { point: [result.lng, result.lat] as Coordinate, zoom, label: result.name_local ? `${result.name} (${result.name_local})` : result.name }
+  const placeType = (result.place_type || '').toLowerCase()
+  const zoom = ['village', 'hamlet', 'locality', 'sublocality', 'neighborhood', 'pointaddress', 'streetaddress'].some((t) =>
+    placeType.includes(t),
+  )
+    ? 17
+    : ['town', 'city', 'municipality'].some((t) => placeType.includes(t))
+      ? 13
+      : ['district', 'subregion', 'state', 'admin'].some((t) => placeType.includes(t))
+        ? 11
+        : 15
+  return {
+    point: [result.lng, result.lat] as Coordinate,
+    zoom,
+    label: result.name_local ? `${result.name} (${result.name_local})` : result.name,
+  }
 }
 
 export function BoundaryMeasurement({ farmId, plotId, initialPoints = [], defaultCenter, initialVillage = '', fallbackAreas = { taluka: '', district: '' } }: { farmId: string; plotId?: string; initialPoints?: Coordinate[]; defaultCenter?: Coordinate; initialVillage?: string; fallbackAreas?: { taluka: string; district: string } }) {
@@ -41,44 +53,140 @@ export function BoundaryMeasurement({ farmId, plotId, initialPoints = [], defaul
 
   useEffect(() => () => { if (watchId !== null) navigator.geolocation.clearWatch(watchId) }, [watchId])
   const searchPlace = useCallback(async () => {
-    const coordinateMatch = search.trim().match(/^(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)$/)
+    const trimmed = search.trim()
+    const coordinateMatch = trimmed.match(/^(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)$/)
     if (coordinateMatch) {
       const lat = Number(coordinateMatch[1]); const lon = Number(coordinateMatch[2])
       if (lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180) { setFocus({ point: [lon, lat], zoom: 17 }); setResults([]); analytics.trackEvent('map_search_used'); return }
     }
-    if (search.trim().length < 3) { setMessage(t('searchTooShort')); return }
-    const supabase = createClient()
-    const nearPoint = defaultCenter || (points.length ? points[0] : undefined)
-    const { data, error } = await supabase.rpc('search_places', { q: search.trim(), near_lat: nearPoint?.[1] ?? null, near_lng: nearPoint?.[0] ?? null, max_results: 8 })
-    if (error) { setMessage(t('searchUnavailable')); return }
-    const localResults = (data || []) as SearchResult[]
-    if (localResults.length) {
-      setResults(localResults)
-      setFocus(focusForResult(localResults[0]))
-      setMessage('')
-      analytics.trackEvent('map_search_used')
-      return
-    }
-    const fallback = fallbackAreas.taluka || fallbackAreas.district
-    if (fallback) {
-      const fallbackResponse = await supabase.rpc('search_places', { q: fallback, near_lat: nearPoint?.[1] ?? null, near_lng: nearPoint?.[0] ?? null, max_results: 1 })
-      const fallbackResult = (fallbackResponse.data || [])[0] as SearchResult | undefined
-      if (fallbackResult) {
-        setResults([])
-        setFocus(focusForResult(fallbackResult))
-        setMessage(t('fallbackArea', { area: fallback }))
-        analytics.trackEvent('map_search_used')
-        return
+    if (trimmed.length < 3) { setMessage(t('searchTooShort')); return }
+
+    // 1. First try Esri Geocoding (matches /dev/map-test behavior for Indian villages)
+    const esriKey = process.env.NEXT_PUBLIC_ESRI_API_KEY
+    if (esriKey) {
+      try {
+        const esriParams = new URLSearchParams({
+          singleLine: trimmed,
+          countryCode: 'IND',
+          maxLocations: '6',
+          outFields: 'Addr_type,Type,Place_addr,PlaceName',
+          f: 'json',
+          token: esriKey,
+          forStorage: 'false',
+        })
+        const res = await fetch(
+          `https://geocode-api.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?${esriParams.toString()}`,
+        )
+        if (res.ok) {
+          const data = await res.json()
+          const candidates = (data.candidates || []) as Array<{
+            address: string
+            location: { x: number; y: number }
+            attributes?: { Type?: string; Addr_type?: string }
+          }>
+          if (candidates.length > 0) {
+            const mapped: SearchResult[] = candidates.map((c, idx) => ({
+              id: idx + 2000,
+              name: c.address,
+              place_type: c.attributes?.Type || c.attributes?.Addr_type || 'village',
+              lat: c.location.y,
+              lng: c.location.x,
+            }))
+            setResults(mapped)
+            setFocus(focusForResult(mapped[0]))
+            setMessage('')
+            analytics.trackEvent('map_search_used')
+            return
+          }
+        }
+      } catch {
+        // Fall through to database / API geocode fallbacks
       }
     }
-    const response = await fetch(`/api/geocode?q=${encodeURIComponent(search.trim())}`, { headers: { 'Accept-Language': document.documentElement.lang || 'en' } })
-    if (!response.ok) { setMessage(response.status === 429 ? t('searchRateLimited') : t('searchUnavailable')); return }
-    const dataFallback = await response.json() as Array<{ display_name: string; type: string; lat: string; lon: string }>
-    const fallbackResult = dataFallback[0]
-    if (fallbackResult) {
-      setFocus({ point: [Number(fallbackResult.lon), Number(fallbackResult.lat)], zoom: 13, label: fallbackResult.display_name })
+
+    // 2. Try Supabase local places table
+    try {
+      const supabase = createClient()
+      const nearPoint = defaultCenter || (points.length ? points[0] : undefined)
+      const { data, error } = await supabase.rpc('search_places', {
+        q: trimmed,
+        near_lat: nearPoint?.[1] ?? null,
+        near_lng: nearPoint?.[0] ?? null,
+        max_results: 8,
+      })
+      if (!error && data) {
+        const localResults = data as SearchResult[]
+        if (localResults.length) {
+          setResults(localResults)
+          setFocus(focusForResult(localResults[0]))
+          setMessage('')
+          analytics.trackEvent('map_search_used')
+          return
+        }
+      }
+    } catch {
+      // Continue to next fallback
     }
-    setResults([]); setMessage(fallbackResult ? '' : t('noSearchResults')); analytics.trackEvent('map_search_used')
+
+    // 3. Fallback area (taluka / district)
+    const fallback = fallbackAreas.taluka || fallbackAreas.district
+    if (fallback) {
+      try {
+        const supabase = createClient()
+        const nearPoint = defaultCenter || (points.length ? points[0] : undefined)
+        const fallbackResponse = await supabase.rpc('search_places', {
+          q: fallback,
+          near_lat: nearPoint?.[1] ?? null,
+          near_lng: nearPoint?.[0] ?? null,
+          max_results: 1,
+        })
+        const fallbackResult = (fallbackResponse.data || [])[0] as SearchResult | undefined
+        if (fallbackResult) {
+          setResults([])
+          setFocus(focusForResult(fallbackResult))
+          setMessage(t('fallbackArea', { area: fallback }))
+          analytics.trackEvent('map_search_used')
+          return
+        }
+      } catch {
+        // Continue to /api/geocode fallback
+      }
+    }
+
+    // 4. Fallback to /api/geocode route
+    try {
+      const response = await fetch(`/api/geocode?q=${encodeURIComponent(trimmed)}`, {
+        headers: { 'Accept-Language': document.documentElement.lang || 'en' },
+      })
+      if (!response.ok) {
+        setMessage(response.status === 429 ? t('searchRateLimited') : t('searchUnavailable'))
+        return
+      }
+      const dataFallback = (await response.json()) as Array<{
+        display_name: string
+        type: string
+        lat: string
+        lon: string
+      }>
+      if (dataFallback && dataFallback.length > 0) {
+        const fallbackResults: SearchResult[] = dataFallback.map((item, idx) => ({
+          id: idx + 1000,
+          name: item.display_name,
+          place_type: item.type || 'village',
+          lat: Number(item.lat),
+          lng: Number(item.lon),
+        }))
+        setResults(fallbackResults)
+        setFocus(focusForResult(fallbackResults[0]))
+        setMessage('')
+        analytics.trackEvent('map_search_used')
+      } else {
+        setResults([])
+        setMessage(t('noSearchResults'))
+      }
+    } catch {
+      setMessage(t('searchUnavailable'))
+    }
   }, [defaultCenter, fallbackAreas, points, search, t])
   useEffect(() => {
     if (search.trim().length < 3) return
